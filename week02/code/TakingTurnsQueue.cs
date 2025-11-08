@@ -1,3 +1,4 @@
+using System.Diagnostics;
 /// <summary>
 /// This queue is circular.  When people are added via AddPerson, then they are added to the 
 /// back of the queue (per FIFO rules).  When GetNextPerson is called, the next person
@@ -13,6 +14,9 @@ public class TakingTurnsQueue
 
     public int Length => _people.Length;
 
+    public bool reversed = false;
+
+
     /// <summary>
     /// Add new people to the queue with a name and number of turns
     /// </summary>
@@ -21,7 +25,53 @@ public class TakingTurnsQueue
     public void AddPerson(string name, int turns)
     {
         var person = new Person(name, turns);
-        _people.Enqueue(person);
+        if (_people.Length > 0)
+        {
+            Stack<Person> queueStack = new Stack<Person>();
+            Stack<Person> reverseStack = new Stack<Person>();
+
+            if (reversed == true)
+            {
+                while (_people.Length > 0)
+                {
+                    queueStack.Push(_people.Dequeue());
+                }
+                queueStack.Push(person);
+                while (queueStack.Count > 0)
+                {
+                    _people.Enqueue(queueStack.Pop());
+                }
+            }
+            // Reverse queue once
+            while (reversed == false)
+            {
+                // Get queue onto a stack(FILO)"(Sue, Tim, Bob)"
+                while (_people.Length > 0)
+                {
+                    queueStack.Push(_people.Dequeue());
+                }
+                // Reverse the stack order "(Bob, Tim, Sue)"
+                while (queueStack.Count > 0)
+                {
+                    reverseStack.Push(queueStack.Pop());
+                }
+                // Enqueue new person at beginning of Queue
+                _people.Enqueue(person);
+
+                // Requeue the stack in reversed order "(Bob, Tim, Sue)"
+                while (reverseStack.Count > 0)
+                {
+                    _people.Enqueue(reverseStack.Pop());
+                }
+                reversed = true;
+            }
+
+        }
+        else
+        {
+            // Enqueue is adding items to the beginning of the queue instead of the end.
+            _people.Enqueue(person);
+        }
     }
 
     /// <summary>
@@ -31,6 +81,7 @@ public class TakingTurnsQueue
     /// person has an infinite number of turns.  An error exception is thrown 
     /// if the queue is empty.
     /// </summary>
+
     public Person GetNextPerson()
     {
         if (_people.IsEmpty())
@@ -39,13 +90,52 @@ public class TakingTurnsQueue
         }
         else
         {
+            //Declare stack to help with requeuing
+            Stack<Person> queueStack = new Stack<Person>();
+            
             Person person = _people.Dequeue();
+
+            bool reQueued = false;
             if (person.Turns > 1)
+            // requeue person
             {
                 person.Turns -= 1;
-                _people.Enqueue(person);
-            }
+                while (reQueued == false)
+                {
 
+                    while (_people.Length > 0)
+                    {
+                        queueStack.Push(_people.Dequeue());
+                    }
+
+                    queueStack.Push(person);
+
+                    while (queueStack.Count > 0)
+                    {
+                        _people.Enqueue(queueStack.Pop());
+                    }
+                    reQueued = true;
+                }
+            }
+            else if (person.Turns <= 0)
+            {
+                while (reQueued == false)
+                {
+                    while (_people.Length > 0)
+                    {
+                        queueStack.Push(_people.Dequeue());
+                    }
+
+                    _people.Enqueue(person);
+
+                    while (queueStack.Count > 0)
+                    {
+                        _people.Enqueue(queueStack.Pop());
+                    }
+                    reQueued = true;
+                }
+                Debug.WriteLine(_people);
+            }
             return person;
         }
     }
