@@ -1,3 +1,4 @@
+using System.Diagnostics;
 /// <summary>
 /// Defines a maze using a dictionary. The dictionary is provided by the
 /// user when the Maze object is created. The dictionary will contain the
@@ -33,6 +34,20 @@ public class Maze
     public void MoveLeft()
     {
         // FILL IN CODE
+        if (_mazeMap[(_currX, _currY)][0] == true)
+        {
+            _currX -= 1;
+            if (_currX < 1)
+            {
+                _currX = 1;
+                throw new InvalidOperationException("Can't go that way!");
+            }
+        } 
+        else
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        GetStatus();
     }
 
     /// <summary>
@@ -42,6 +57,20 @@ public class Maze
     public void MoveRight()
     {
         // FILL IN CODE
+        if (_mazeMap[(_currX, _currY)][1] == true)
+        {
+            _currX += 1;
+            if (_currX > 6)
+            {
+                _currX = 6;
+                throw new InvalidOperationException("Can't go that way!");
+            }
+        } 
+        else
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        GetStatus();
     }
 
     /// <summary>
@@ -51,6 +80,20 @@ public class Maze
     public void MoveUp()
     {
         // FILL IN CODE
+        if (_mazeMap[(_currX, _currY)][2] == true)
+        {
+            _currY -= 1;
+            if (_currY < 1)
+            {
+                _currY = 1;
+                throw new InvalidOperationException("Can't go that way!");
+            }
+        } 
+        else
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        GetStatus();
     }
 
     /// <summary>
@@ -60,10 +103,26 @@ public class Maze
     public void MoveDown()
     {
         // FILL IN CODE
+
+        if (_mazeMap[(_currX, _currY)][3] == true)
+        {
+            _currY += 1;
+            if (_currY > 6)
+            {
+                _currY = 6;
+                throw new InvalidOperationException("Can't go that way!");
+            }
+        } 
+        else
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
+        GetStatus();
     }
 
     public string GetStatus()
     {
+        // Debug.WriteLine($"Current location (x={_currX}, y={_currY})");
         return $"Current location (x={_currX}, y={_currY})";
     }
 }

@@ -25,6 +25,10 @@
     private static int CountDuplicates(int[] data)
     {
         // Add code here.
-        return 0;
+        int[] compareData1 = data;
+        int[] compareData2 = data;
+
+        var duplicates = compareData1.Intersect(compareData2).ToHashSet();
+        return duplicates.Count;
     }
 }

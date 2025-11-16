@@ -1,4 +1,6 @@
 using System.Text.Json;
+using System.Diagnostics;
+
 
 public static class SetsAndMaps
 {
@@ -22,7 +24,31 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        HashSet<string> wordSet = new HashSet<string>(words);
+        // create returning string set
+        HashSet<string> results = new HashSet<string>();
+
+        foreach (var word in wordSet)
+        {
+            // if word has same letters, skip it
+            if (word[0] == word[1])
+                continue;
+            // reverse the word
+            string reverseWord = new string(new char[] { word[1], word[0] });
+
+            if (wordSet.Contains(reverseWord))
+            {
+                // create string for each word
+                string first = (word.CompareTo(reverseWord) > 0) ? word : reverseWord;
+                string second = (first == word) ? reverseWord : word;
+                // Add words to set in reverse alphabetical order
+                results.Add($"{first} & {second}");
+            }
+
+        }
+
+        return results.ToArray();;
+
     }
 
     /// <summary>
@@ -39,12 +65,20 @@ public static class SetsAndMaps
     public static Dictionary<string, int> SummarizeDegrees(string filename)
     {
         var degrees = new Dictionary<string, int>();
-        foreach (var line in File.ReadLines(filename))
+
+        foreach (var line in File.ReadLines("../../../census.txt"))
         {
             var fields = line.Split(",");
-            // TODO Problem 2 - ADD YOUR CODE HERE
+            var degree = fields[3];
+            if (degrees.ContainsKey(degree))
+            {
+                degrees[degree] += 1;
+            }
+            else
+            {
+                degrees.Add($"{degree}", 1);
+            }
         }
-
         return degrees;
     }
 
@@ -67,7 +101,50 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        var letterFrequency = new Dictionary<char, int>();
+        string formattedWord1 = word1.Replace(" ", "").ToLower();
+        string formattedWord2 = word2.Replace(" ", "").ToLower();
+
+        if (formattedWord1.Length != formattedWord2.Length)
+        {
+            return false;
+        }
+
+        foreach (char letter in formattedWord1)
+        {
+            if (letterFrequency.ContainsKey(letter))
+            {
+                letterFrequency[letter] += 1;
+            }
+            else
+            {
+                letterFrequency.Add(letter, 1);
+            }
+        }
+
+        foreach (char letter in formattedWord2)
+        {
+
+                if (letterFrequency.ContainsKey(letter))
+                {
+                    letterFrequency[letter] -= 1;
+
+                    if (letterFrequency[letter] < 0)
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+        }
+
+        foreach (KeyValuePair<char, int> pair in letterFrequency)
+        {
+            Debug.WriteLine($"{pair.Key}, {pair.Value}");
+        }
+        return true;
     }
 
     /// <summary>
@@ -101,6 +178,19 @@ public static class SetsAndMaps
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
         // 3. Return an array of these string descriptions.
+        if (featureCollection != null )
+        {
+            List<string> results = new List<string>();
+            foreach (var feature in featureCollection.features)
+            {
+                string place = feature.properties.place;
+                double mag = feature.properties.mag;
+                results.Add($"{place} - Mag {mag}");
+                // Debug.WriteLine($"{place} - Mag {mag}");
+            }
+            return results.ToArray();
+        }
+
         return [];
     }
 }
