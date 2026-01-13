@@ -22,7 +22,7 @@ public static class Arrays
             multiples[i-1] = number * i;
         }
 
-        return multiples; // replace this return statement with your own
+        return multiples;
     }
 
     /// <summary>
@@ -47,19 +47,9 @@ public static class Arrays
 
         newArrayBeginning.AddRange(newArrayEndingPart);
 
-        // for (int i = 0; i < data.Count; i++)
-        // {
-            // Debug.WriteLine(newArrayBeginning[i]);
-            // Debug.WriteLine(newArrayBeginning[i]);
-            // Debug.WriteLine(newArrayEndingPart[i]);
-        // }
-
         data.Clear();
         data.AddRange(newArrayBeginning);
 
-        // for (int i = 0; i < data.Count; i++)
-        // {
-        //     Debug.WriteLine(data[i]);
-        // }
     }
 }
+

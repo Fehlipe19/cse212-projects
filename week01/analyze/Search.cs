@@ -39,7 +39,6 @@ public static class Search {
             if (item == target)
                 return count; // Found it
         }
-
         return count; // Didn't find it
     }
 
