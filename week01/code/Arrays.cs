@@ -21,7 +21,6 @@ public static class Arrays
         {
             multiples[i-1] = number * i;
         }
-
         return multiples;
     }
 

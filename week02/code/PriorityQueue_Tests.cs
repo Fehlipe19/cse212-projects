@@ -19,7 +19,6 @@ public class PriorityQueueTests
         priorityQueue.Enqueue("Tim", 4);
         priorityQueue.Enqueue("Sue", 3);
 
-        // Debug.WriteLine(priorityQueue.ToString());
         Assert.AreEqual("[Bob (Pri:1), Tim (Pri:4), Sue (Pri:3)]", priorityQueue.ToString());
         // Assert.Fail("Implement the test case and then remove this.");
     }
@@ -42,7 +41,6 @@ public class PriorityQueueTests
         while (priorityQueue.Length > 0)
         {
             var person = priorityQueue.Dequeue();
-            // Debug.WriteLine(person);
             Assert.AreEqual(expectedResult[i], person);
             i++;
         }
