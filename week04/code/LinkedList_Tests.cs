@@ -1,4 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Diagnostics;
 
 // DO NOT MODIFY THIS FILE
 
@@ -140,14 +142,19 @@ public class RemoveTests
         ll.InsertAfter(5, 6);
 
         Assert.AreEqual("<LinkedList>{5, 6, 2, 4, 3, 35, 2, 2}", ll.ToString());
+        Debug.WriteLine(ll.ToString());
         ll.Remove(3);
         Assert.AreEqual("<LinkedList>{5, 6, 2, 4, 35, 2, 2}", ll.ToString());
+        Debug.WriteLine(ll.ToString());
         ll.Remove(6);
         Assert.AreEqual("<LinkedList>{5, 2, 4, 35, 2, 2}", ll.ToString());
+        Debug.WriteLine(ll.ToString());
         ll.Remove(2);
         Assert.AreEqual("<LinkedList>{5, 4, 35, 2, 2}", ll.ToString());
+        Debug.WriteLine(ll.ToString());
         ll.Remove(2);
         Assert.AreEqual("<LinkedList>{5, 4, 35, 2}", ll.ToString());
+        Debug.WriteLine(ll.ToString());
         ll.Remove(2);
         Assert.AreEqual("<LinkedList>{5, 4, 35}", ll.ToString());
     }
